@@ -1,0 +1,46 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+  name: ingress-default-namespace
+  namespace: default
+spec:
+  rules:
+  - host: blog.kkit.space
+    http:
+      paths:
+      - backend:
+          service:
+            name: hello-one
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  - host: shop.kkit.space
+    http:
+      paths:
+      - backend:
+          service:
+            name: hello-two
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  - host: demo.kkit.space
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - blog.kkit.space
+    - shop.kkit.space
+    - demo.kkit.space
+    secretName: tls-ingress-default-namespace
